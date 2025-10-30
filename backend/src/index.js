@@ -4,12 +4,14 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const authRoutes = require("./routes/authRoutes");
+const eventRoutes = require("./routes/EventRoutes");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 app.use("/auth", authRoutes);
+app.use("/events", eventRoutes);
 app.get("/", (req, res) => res.send("Hello World!"));
 
 app.use((err, req, res, next) => {
