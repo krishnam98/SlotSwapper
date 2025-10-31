@@ -6,6 +6,7 @@ const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const eventRoutes = require("./routes/EventRoutes");
 const swapRoutes = require("./routes/swapRoutes");
+const requestRoutes = require("./routes/requestroutes");
 
 const app = express();
 app.use(cors());
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/events", eventRoutes);
 app.use("/api", swapRoutes);
+app.use("/requests", requestRoutes);
 
 app.get("/", (req, res) => res.send("Hello World!"));
 
