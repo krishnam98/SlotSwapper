@@ -125,7 +125,7 @@ exports.respondSwap = async (req, res) => {
     if (!eventA || !eventB) {
       return res
         .status(404)
-        .json({ message: "One of the Event does not exist" });
+        .json({ message: "One of the Event does not exist", swap });
     }
 
     if (eventA.status !== "SWAP_PENDING" || eventB.status !== "SWAP_PENDING") {
