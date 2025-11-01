@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login, signup } from "../store/AuthSlice";
 import { useNavigate } from "react-router-dom";
-import { Calendar, Mail, Lock, User } from "lucide-react";
+import { Calendar, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { useEffect } from "react";
 
 export default function AuthPage() {
     const [form, setForm] = useState({ name: "", email: "", password: "" });
     const [isLogin, setIsLogin] = useState(true);
+    const [showPassword, setShowPassword] = useState(false);
     const { error, success, loading } = useSelector(state => state.auth);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -96,11 +97,23 @@ export default function AuthPage() {
                                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                                 <input
                                     placeholder="Enter your password"
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     value={form.password}
                                     onChange={e => setForm({ ...form, password: e.target.value })}
-                                    className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                                    className="w-full pl-10 pr-12 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                                 />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none z-10"
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                >
+                                    {showPassword ? (
+                                        <EyeOff className="w-5 h-5" />
+                                    ) : (
+                                        <Eye className="w-5 h-5" />
+                                    )}
+                                </button>
                             </div>
                         </div>
 
