@@ -1,11 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getIncomingRequests, getOutgoingRequests, respondSwap } from "../store/SwapSlice";
-import { Bell, Calendar, User, ArrowRightLeft } from "lucide-react";
+import { Bell, Calendar, User, ArrowRightLeft, Loader2 } from "lucide-react";
 
 const Notifications = () => {
     const dispatch = useDispatch();
-    const { incomingRequests, outgoingRequests } = useSelector(s => s.swaps);
+    const { incomingRequests, outgoingRequests, loading } = useSelector(s => s.swaps);
+    const [processingId, setProcessingId] = useState(null);
 
     useEffect(() => {
         dispatch(getIncomingRequests());
@@ -13,9 +14,14 @@ const Notifications = () => {
     }, [dispatch]);
 
     const respond = async (requestId, accept) => {
-        await dispatch(respondSwap({ requestId, accept })).unwrap();
-        await dispatch(getIncomingRequests());
-        dispatch(getOutgoingRequests());
+        setProcessingId(requestId);
+        try {
+            await dispatch(respondSwap({ requestId, accept })).unwrap();
+            await dispatch(getIncomingRequests());
+            dispatch(getOutgoingRequests());
+        } finally {
+            setProcessingId(null);
+        }
     }
 
     return (
@@ -75,15 +81,31 @@ const Notifications = () => {
                                         <div className="flex gap-2">
                                             <button
                                                 onClick={() => respond(r._id, true)}
-                                                className="flex-1 px-3 py-2 bg-green-600 text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
+                                                disabled={processingId === r._id}
+                                                className="flex-1 px-3 py-2 bg-green-600 text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                                             >
-                                                Accept
+                                                {processingId === r._id ? (
+                                                    <>
+                                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                                        Processing...
+                                                    </>
+                                                ) : (
+                                                    "Accept"
+                                                )}
                                             </button>
                                             <button
                                                 onClick={() => respond(r._id, false)}
-                                                className="flex-1 px-3 py-2 bg-red-600 text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-red-700 transition-colors"
+                                                disabled={processingId === r._id}
+                                                className="flex-1 px-3 py-2 bg-red-600 text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                                             >
-                                                Reject
+                                                {processingId === r._id ? (
+                                                    <>
+                                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                                        Processing...
+                                                    </>
+                                                ) : (
+                                                    "Reject"
+                                                )}
                                             </button>
                                         </div>
                                     ) : (

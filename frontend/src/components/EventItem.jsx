@@ -38,6 +38,16 @@ const EventItem = ({ ev }) => {
 
     const isSwappable = ev.status === "SWAPPABLE";
 
+    const formatDateTime = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleString('en-IN', {
+            timeZone: 'Asia/Kolkata',
+            dateStyle: 'medium',
+            timeStyle: 'short',
+        });
+    };
+
+
     // Format datetime-local input value
     const formatDateTimeLocal = (dateString) => {
         const date = new Date(dateString);
@@ -95,11 +105,11 @@ const EventItem = ({ ev }) => {
                                 <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mt-2">
                                     <div className="flex items-center gap-1.5 text-sm text-gray-600">
                                         <Clock className="w-4 h-4 flex-shrink-0" />
-                                        <span className="truncate">{new Date(ev.startTime).toLocaleString()}</span>
+                                        <span className="truncate">{formatDateTime(ev.startTime)}</span>
                                     </div>
                                     <span className="hidden sm:inline text-gray-400">→</span>
                                     <span className="text-sm text-gray-600 truncate pl-5 sm:pl-0">
-                                        {new Date(ev.endTime).toLocaleString()}
+                                        {formatDateTime(ev.endTime)}
                                     </span>
                                 </div>
                                 <div className="mt-2">

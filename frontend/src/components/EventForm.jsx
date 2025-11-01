@@ -9,7 +9,12 @@ const EventForm = () => {
 
     const submit = async (e) => {
         e.preventDefault();
-        dispatch(createEvent(form));
+        const formattedEvent = {
+            ...form,
+            startTime: new Date(form.startTime).toISOString(), // store in UTC
+            endTime: new Date(form.endTime).toISOString(),
+        };
+        dispatch(createEvent(formattedEvent));
         setForm({ title: "", startTime: "", endTime: "" });
     }
 
