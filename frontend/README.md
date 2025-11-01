@@ -1,16 +1,113 @@
-# React + Vite
+# SlotSwapper
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**SlotSwapper** is a peer-to-peer time-slot scheduling application that allows users to mark their calendar slots as _swappable_, view other users’ available slots, and request swaps between them.  
+It provides a complete scheduling experience with authentication, real-time request management, and clear user interfaces for both outgoing and incoming swap requests.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Overview
 
-## React Compiler
+- **Modular Architecture** — separated backend (Node.js/Express) and frontend (React + Redux Toolkit) for scalability and maintainability.
+- **State Management** — Redux Toolkit with Async Thunks for clean async logic and predictable state flow.
+- **Authentication** — JWT-based authentication with password hashing using bcrypt.
+- **UI Design** — Responsive, minimal UI built using Tailwind CSS.
+- **Database Design** — Three main models: `User`, `Event`, and `SwapRequest` to ensure clarity in relationships between users, events, and swap logic.
+- **API-Driven Approach** — Clear RESTful endpoints to interact between frontend and backend.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Setup Instructions
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+
+- Node.js (>= 18)
+- npm or yarn
+- MongoDB Atlas (or local MongoDB setup)
+- Git
+
+---
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/krishnam98/SlotSwapper
+cd SlotSwapper
+```
+
+---
+
+### Backend Setup
+
+```bash
+cd backend
+npm install
+```
+
+### Create `.env` file inside /backend
+
+```bash
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+```
+
+### Run the Backend
+
+```bash
+npm run dev
+```
+
+---
+
+## Frontend Setup
+
+```bash
+cd ../frontend
+npm install
+```
+
+### Run the Frontend
+
+```bash
+npm run dev
+```
+
+### Frontend will start on `http://localhost:5173` (default Vite port).
+
+## API Endpoints
+
+| Method     | Endpoint                 | Description                                                    |
+| :--------- | :----------------------- | :------------------------------------------------------------- |
+| **POST**   | `/api/auth/signup`       | Register new user                                              |
+| **POST**   | `/api/auth/login`        | Login user & get token                                         |
+| **GET**    | `/api/events`            | Fetch user’s events                                            |
+| **POST**   | `/api/events`            | Create new event                                               |
+| **PUT**    | `/api/events/:id`        | Update event details                                           |
+| **DELETE** | `/api/events/:id`        | Delete event                                                   |
+| **GET**    | `/api/swaps`             | Fetch all swap requests (incoming & outgoing for current user) |
+| **POST**   | `/api/swaps/request`     | Send swap request                                              |
+| **PUT**    | `/api/swaps/respond/:id` | Accept or reject a swap request                                |
+
+---
+
+## Postman Collection
+
+You can test all the above APIs directly using the Postman collection below:
+
+[SlotSwapper Postman Collection](https://web.postman.co/workspace/My-Workspace~15f366c9-1eae-4c9a-8713-e7f5a68c5a43/collection/36325688-080716c1-8d93-4cbb-a5d1-5a78b2276d27?action=share&source=copy-link&creator=36325688)
+
+---
+
+## Challenges Faced
+
+- Designing the swap logic to ensure mutual availability and avoid conflicts.
+
+- Managing Redux state updates for both incoming and outgoing swap requests.
+
+- Keeping the UI synchronized after a swap acceptance or rejection.
+
+- Handling authentication flow and token expiry on the frontend gracefully.
+
+---
+
+# Author - Krishnam Soni
