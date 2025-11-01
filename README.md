@@ -74,19 +74,23 @@ npm run dev
 
 ### Frontend will start on `http://localhost:5173` (default Vite port).
 
+---
+
 ## API Endpoints
 
-| Method     | Endpoint                 | Description                                                    |
-| :--------- | :----------------------- | :------------------------------------------------------------- |
-| **POST**   | `/api/auth/signup`       | Register new user                                              |
-| **POST**   | `/api/auth/login`        | Login user & get token                                         |
-| **GET**    | `/api/events`            | Fetch user’s events                                            |
-| **POST**   | `/api/events`            | Create new event                                               |
-| **PUT**    | `/api/events/:id`        | Update event details                                           |
-| **DELETE** | `/api/events/:id`        | Delete event                                                   |
-| **GET**    | `/api/swaps`             | Fetch all swap requests (incoming & outgoing for current user) |
-| **POST**   | `/api/swaps/request`     | Send swap request                                              |
-| **PUT**    | `/api/swaps/respond/:id` | Accept or reject a swap request                                |
+| Method     | Endpoint                        | Description                     |
+| :--------- | :------------------------------ | :------------------------------ |
+| **POST**   | `/auth/signup`                  | Register new user               |
+| **POST**   | `/auth/login`                   | Login user & get token          |
+| **GET**    | `/events/getMyEvents`           | Fetch user’s events             |
+| **POST**   | `/events/create`                | Create new event                |
+| **PUT**    | `/events/update/:id`            | Update event details            |
+| **DELETE** | `/events/delete/:id`            | Delete event                    |
+| **GET**    | `/api/swappableSlots`           | Fetch all swappable slots       |
+| **POST**   | `/api/swap-request`             | Send swap request               |
+| **POST**   | `/api/swap-respond/:id`         | Accept or reject a swap request |
+| **GET**    | `/requests/getOutgoingRequests` | Get Outgoing Requests           |
+| **GET**    | `/requests/getIncomingRequests` | Get Incoming Requests           |
 
 ---
 
