@@ -78,7 +78,7 @@ const EventSlice = createSlice({
       .addCase(deleteEvent.fulfilled, (state, action) => {
         state.loading = false;
         const index = state.items.findIndex(
-          (item) => item._id === action.payload._id
+          (item) => item._id === action.meta.arg
         );
         if (index !== -1) {
           state.items.splice(index, 1);
