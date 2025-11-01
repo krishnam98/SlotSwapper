@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Calendar, Clock, ArrowRightLeft, Edit2, X, Check } from "lucide-react";
-import { updateEvent } from "../store/EventSlice";
+import { Calendar, Clock, ArrowRightLeft, Edit2, X, Check, Trash2 } from "lucide-react";
+import { updateEvent, deleteEvent } from "../store/EventSlice";
 
 const EventItem = ({ ev }) => {
     const dispatch = useDispatch();
@@ -14,6 +14,12 @@ const EventItem = ({ ev }) => {
 
     const makeSwappable = () => {
         dispatch(updateEvent({ id: ev._id, payload: { status: ev.status === "SWAPPABLE" ? "BUSY" : "SWAPPABLE" } }));
+    };
+
+    const handleDelete = () => {
+        if (window.confirm(`Are you sure you want to delete "${ev.title}"?`)) {
+            dispatch(deleteEvent(ev._id));
+        }
     };
 
     const handleUpdate = () => {
@@ -129,14 +135,25 @@ const EventItem = ({ ev }) => {
                         </>
                     ) : (
                         <>
-                            <button
-                                onClick={() => setIsEditing(true)}
-                                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
-                            >
-                                <Edit2 className="w-4 h-4" />
-                                <span className="whitespace-nowrap">Edit</span>
-                            </button>
-                            {!(ev.status === "SWAP_PENDING") && (
+                            <div className="flex justify-between items-center">
+                                <button
+                                    onClick={() => setIsEditing(true)}
+                                    className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all bg-blue-200 hover:bg-blue-700 hover:text-white text-blue-900 shadow-sm"
+                                >
+                                    <Edit2 className="w-4 h-4" />
+                                    <span className="whitespace-nowrap">Edit</span>
+                                </button>
+
+                                <button
+                                    onClick={handleDelete}
+                                    className="flex items-center justify-center p-2.5 rounded-lg font-medium text-sm transition-all bg-red-300 hover:bg-red-700 hover:text-white text-red-900 shadow-sm"
+                                    title="Delete event"
+                                >
+                                    <Trash2 className="w-5 h-5" />
+                                </button>
+                            </div>
+
+                            {ev.status !== "SWAP_PENDING" && (
                                 <button
                                     onClick={makeSwappable}
                                     className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all ${isSwappable

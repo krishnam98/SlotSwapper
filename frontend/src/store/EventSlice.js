@@ -18,6 +18,11 @@ const updateEvent = createAsyncThunk("events/updateEvent", async (data) => {
   return res.data;
 });
 
+const deleteEvent = createAsyncThunk("events/deleteEvent", async (id) => {
+  const res = await API.delete("events/delete/" + id);
+  return res.data;
+});
+
 const EventSlice = createSlice({
   name: "events",
   initialState: { items: [], loading: false, error: null },
@@ -65,9 +70,26 @@ const EventSlice = createSlice({
       .addCase(updateEvent.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(deleteEvent.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteEvent.fulfilled, (state, action) => {
+        state.loading = false;
+        const index = state.items.findIndex(
+          (item) => item._id === action.payload._id
+        );
+        if (index !== -1) {
+          state.items.splice(index, 1);
+        }
+      })
+      .addCase(deleteEvent.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
 
-export { fetchEvents, createEvent, updateEvent };
+export { fetchEvents, createEvent, updateEvent, deleteEvent };
 export default EventSlice.reducer;
